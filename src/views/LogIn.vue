@@ -13,7 +13,7 @@
       v-model="password"
       placeholder="Password"
     />
-    <button type="submit" class="form-btn border">Sign in</button>
+    <button type="submit" class="form-btn border">Login</button>
     <div class="form-social-login">
       <button class="form-btn border form-social-btn">
         <i class="fab fa-google"></i>
@@ -30,26 +30,39 @@ export default {
     return {
       email: "",
       password: "",
+      isLoggedIn: false
     };
   },
   methods: {
-    login() {
-      console.log(this.email, this.password);
-    },
+  login(){
+    fetch('https://pos-fj.herokuapp.com/users', {
+     method: 'PATCH',
+     body: JSON.stringify({
+      email: this.email,
+      password: this.password,
+  }),
+  headers: {
+    'Content-type': 'application/json; charset=UTF-8',
   },
+})
+  .then((response) => response.json())
+  .then((json) => {
+   localStorage.setItem("jwt", json.jwt);
+   alert("User logged in");
+   this.$router.push({ name: "Products"});
+  })
+  .catch((err) => {
+    alert(err);
+  });
+  },
+ },
 };
 </script>
 <style>
 .border {
-  border-radius: 30px;
-  background: #f5f5f5;
-  box-shadow: 8px 8px 15px #e4e4e4, -8px -8px 15px #ffffff;
+border: none !important;
 }
-.border-input {
-  border-radius: 30px;
-  background: #f5f5f5;
-  box-shadow: inset 8px 8px 15px #e4e4e4, inset -8px -8px 15px #ffffff;
-}
+
 
 .form {
   display: flex;

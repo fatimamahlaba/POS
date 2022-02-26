@@ -1,13 +1,11 @@
 <template>
   <div class="home">
-   <h1>dasdasd  </h1>
+ <img src="" alt="" srcset="">
   </div>
 </template>
-
 <script>
-// @ is an alias to /src
-
-
-export default {
-}
 </script>
+
+<style scoped>
+
+</style>

@@ -1,6 +1,6 @@
 <template>
   <form @submit.prevent="register" class="form border">
-    <h2 class="form-heading">Register</h2>
+    <h2 class="form-heading">SignUp</h2>
     <input
       class="form-input border-input"
       type="text"
@@ -47,23 +47,41 @@ export default {
     };
   },
   methods: {
-    register() {
-      console.log(this.name, this.email, this.contact, this.password);
-    },
+    register(){
+    fetch('https://pos-fj.herokuapp.com/users', {
+  method: 'POST',
+  body: JSON.stringify({
+    name: this.name,
+    email: this.email,
+    contact: this.contact,
+    password: this.password,
+  }),
+  headers: {
+    'Content-type': 'application/json; charset=UTF-8',
+  },
+})
+  .then((response) => response.json())
+  .then((json) => {
+   localStorage.setItem("jwt", json.jwt);
+   alert("User is signed up");
+   this.name='',
+    this.email='',
+    this.contact='',
+    this.password='',
+   this.$router.push({ name: "Login"});
+    })
+    .catch((err) => {
+      alert(err);
+    });
+  },
   },
 };
 </script>
 <style scoped>
 .border {
-  border-radius: 30px;
-  background: #f5f5f5;
-  box-shadow: 8px 8px 15px #e4e4e4, -8px -8px 15px #ffffff;
+  border: none !important;
 }
-.border-input {
-  border-radius: 30px;
-  background: #f5f5f5;
-  box-shadow: inset 8px 8px 15px #e4e4e4, inset -8px -8px 15px #ffffff;
-}
+
 
 .form {
   display: flex;

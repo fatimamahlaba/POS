@@ -1,24 +1,28 @@
 <template>
-<Navbar/>
-   <router-view/>
+<Navbar :isLoggedIn="isLoggedIn"/>
+<Background/>
+   <router-view />
+   <Footer />
 </template>
+
 <script>
 import Navbar from '../src/components/Navbar.vue'
+import Background from '../src/components/Background.vue'
 
 export default
 {
   components: {
-    Navbar
+    Navbar,
+    Background
+  },
+  data(){
+    return {
+      isLoggedIn: false
+    }
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+
 </style>
