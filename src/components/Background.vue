@@ -25,4 +25,7 @@ export default {
 .custom-shape-divider-bottom-1645791942 .shape-fill {
     fill: rgb(118, 171, 196);
 }
+svg{
+    z-index: -10;
+}
 </style>

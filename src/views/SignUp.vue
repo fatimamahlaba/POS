@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     register(){
-    fetch('https://pos-fj.herokuapp.com/users', {
+    fetch('http://localhost:2000/users', {
   method: 'POST',
   body: JSON.stringify({
     name: this.name,
@@ -77,7 +77,7 @@ export default {
   },
 };
 </script>
-<style scoped>
+<style>
 .border {
   border: none !important;
 }
@@ -104,6 +104,7 @@ export default {
   border: none;
   outline: none;
   padding: 20px;
+  background-color: rgb(201, 199, 199);
 }
 
 .form-btn {

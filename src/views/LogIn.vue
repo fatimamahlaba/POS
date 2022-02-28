@@ -30,12 +30,12 @@ export default {
     return {
       email: "",
       password: "",
-      isLoggedIn: false
+      isLoggedIn: true
     };
   },
   methods: {
   login(){
-    fetch('https://pos-fj.herokuapp.com/users', {
+    fetch('http://localhost:2000/users', {
      method: 'PATCH',
      body: JSON.stringify({
       email: this.email,
@@ -74,6 +74,7 @@ border: none !important;
   margin-inline: auto;
   max-width: 600px;
   margin-top: 150px;
+  z-index: 1;
 }
 
 .form-heading {
@@ -86,6 +87,7 @@ border: none !important;
   border: none;
   outline: none;
   padding: 20px;
+  z-index: 1;
 }
 
 .form-btn {

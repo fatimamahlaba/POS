@@ -1,50 +1,107 @@
 <template>
-   <div class="section-head">
-      <h2></h2>
-    </div>
-     <div class="row" v-if="projects">
-      <div v-for="(project, index) of projects" :key="index.id" class="col-sm-auto col-md-auto col-lg- col-xl- col-xxl" style="height: 300px;">
-        <div class="card">
-          <img class="card-img-top" :src="project.image" alt="Portfolio practice" style="height: 300px;">
+<div class="products" >
+  <div style="text-align:center">
 
-      <div class="card-body">
-        <h5 class="card-title">{{project.title}}</h5>
-        <a :href="project.github" target="_blank" class="btn" style="display: inline-block; background-color: green"><img src="https://i.postimg.cc/bv8wZrwb/icons8-github-30.png" style="height: 40px; width: 30px ;" alt=""></a>
-        <a :href="project.netlify" taget="_blank" class="btn" style="display: inline-block; background-color: green"><img src="https://i.postimg.cc/13kDHd0S/netty.png" style="height: 40px; width: 30px ;" alt=""></a>
+  <h1 style="text-align:center">Products</h1>
+  <!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Add a product
+</button>
+  </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Add Phone</h5>
+        
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
     </div>
   </div>
-    </div>
+</div>
+
+
+<div class="container">
+<div class="row">
+
+
+<div v-for="product of products" :key="product.name" class="card" style="width: 25rem;">
+  <img :src="product.img" class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title">{{product.name}}</h5>
+    <p class="card-text">{{product.price}}</p>
+    <p class="card-text">{{product.category}}</p>
+    <a href="#" class="btn btn-primary">Add to cart</a>
+  </div>
+</div>
+
+</div>
+</div>
+
+
+
+</div>
+
+
 </template>
 
 <script>
-// export default {
-//   data() {
-//       return {
-//           products: []
-//       };
-//   },
-// mounted(){
-//   fetch("https://pos-fj.herokuapp.com/products")
-//   .then(res => res.json())
-//   .then(data => {
-//     this.projects = data;
-//   })
-// }
-// };
-
+export default {
+  data() {
+    return {
+      products: null,
+    };
+  },
+  // fetching product
+  created() {
+    if (localStorage.getItem("jwt")) {
+      fetch("http://localhost:2000/products", {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+        },
+      })
+        .then((response) => response.json())
+        .then((json) => {
+          this.products = json;
+          this.products.forEach(async (product) => {
+            await fetch(
+              "http://localhost:2000/products" + product.name,
+              {
+                method: "GET",
+                headers: {
+                  "Content-type": "application/json; charset=UTF-8",
+                  Authorization: `Bearer ${localStorage.getItem("jwt")}`,
+                },
+              }
+            )
+              .then((response) => response.json())
+              .then((json) => {
+                product.author = json.name;
+              });
+          });
+        })
+        .catch((err) => {
+          alert("Log in failed");
+        });
+    } else {
+      alert("Not logged in");
+      this.$router.push({ name: "Login" });
+    }
+    
+  },
+};
 </script>
 
 <style scoped>
-.container{
-        padding-bottom: 50px;
-    }
-
-.btn{
-    margin: 10px;
-}    
-.card{
-  margin-top: 200px;
-}
 </style>
